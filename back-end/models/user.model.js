@@ -27,7 +27,6 @@ const userSchema = new mongoose.Schema(
     },
     isActive: {
       type: Boolean,
-      // required: true
     },
     avatar: {
       type: String,
@@ -38,8 +37,6 @@ const userSchema = new mongoose.Schema(
     gender: { type: String, default: "male" },
     mobile: { type: String, default: "" },
     address: { type: String, default: "" },
-    //followers: [{type: mongoose.Types.ObjectId, ref: 'user'}],
-    //following: [{type: mongoose.Types.ObjectId, ref: 'user'}],
     groups: [{ type: mongoose.Types.ObjectId, ref: "group" }],
   },
   {

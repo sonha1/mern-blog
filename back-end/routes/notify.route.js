@@ -8,7 +8,7 @@ import {
 } from "../controllers/notify.controller.js";
 import auth from "../middleware/auth.js";
 const router = express.Router();
-
+// /api/notify
 router.post("/create", auth, createNotify);
 router.delete("/deleteAllNotify", auth, deleteAllNotifies);
 router.get("/all", auth, getNotifies);

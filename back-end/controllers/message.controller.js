@@ -38,6 +38,7 @@ export const createMessage = async (req, res, next) => {
     return res.status(500).json({ msg: err.message });
   }
 };
+
 export const getConversations = async (req, res, next) => {
   try {
     const features = new APIfeatures(
@@ -97,13 +98,13 @@ export const deleteMessages = async (req, res, next) => {
 
 export const deleteConversation = async (req, res, next) => {
   try {
-    const newConver = await Conversations.findOneAndDelete({
+    const newConversation = await Conversations.findOneAndDelete({
       $or: [
         { recipients: [req.user._id, req.params.id] },
         { recipients: [req.params.id, req.user._id] },
       ],
     });
-    await Messages.deleteMany({ conversation: newConver._id });
+    await Messages.deleteMany({ conversation: newConversation._id });
 
     res.json({ msg: "Delete Success!" });
   } catch (err) {

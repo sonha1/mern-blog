@@ -18,17 +18,17 @@ app.use(cors()); // cross-origin resource sharing
 
 connectDb();
 
-app.get("/findAllGroups", (req, res) => {
-  Group.find({})
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while retrieving groups.",
-      });
-    });
-});
+// app.get("/findAllGroups", (req, res) => {
+//   Group.find({})
+//     .then((data) => {
+//       res.send(data);
+//     })
+//     .catch((err) => {
+//       res.status(500).send({
+//         message: err.message || "Some error occurred while retrieving groups.",
+//       });
+//     });
+// });
 routes(app);
 
 const server = http.createServer(app);

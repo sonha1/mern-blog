@@ -9,7 +9,7 @@ import {
 import auth from "../middleware/auth.js";
 
 const router = express.Router();
-
+// /api/message
 router.post("/create", auth, createMessage);
 router.get("/conversations", auth, getConversations);
 router.get("/:id", auth, getMessages);

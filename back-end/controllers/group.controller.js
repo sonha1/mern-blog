@@ -304,7 +304,6 @@ export const getGroup = async (req, res, next) => {
           select: "-password",
         },
       });
-    console.log(group);
 
     if (!group) console.error(err);
     next(err);
@@ -385,8 +384,6 @@ export const inviteUser = async (req, res, next) => {
 };
 export const rejectInvite = async (req, res, next) => {
   try {
-    console.log(req.body);
-    console.log(req.body.id);
     const group = await Groups.findOneAndUpdate(
       { _id: req.params.id },
       {
@@ -455,6 +452,7 @@ export const addToGroup = async (req, res, next) => {
     next(err);
   }
 };
+
 export const denyRequest = async (req, res, next) => {
   try {
     const leave = await Groups.findOneAndUpdate(

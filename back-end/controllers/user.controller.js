@@ -33,14 +33,6 @@ export const register = async (req, res, next) => {
       isActive,
     });
 
-    // const accessToken = createAccessToken({ id: newUser._id });
-    // const refreshToken = createRefreshToken({ id: newUser._id });
-
-    // res.cookie("refreshtoken", refresh_token, {
-    //   httpOnly: true,
-    //   path: "/api/refresh_token",
-    //   maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
-    // });
     await newUser.save();
 
     res.json({
@@ -56,6 +48,7 @@ export const register = async (req, res, next) => {
     next(err);
   }
 };
+
 export const login = async (req, res, next) => {
   try {
     const { email, username, password } = req.body;
@@ -80,9 +73,9 @@ export const login = async (req, res, next) => {
       });
 
     const access_token = createAccessToken({ id: user._id });
-    const refresh_token = createRefreshToken({ id: user._id });
+    const refreshToken = createRefreshToken({ id: user._id });
 
-    res.cookie("refreshtoken", refresh_token, {
+    res.cookie("refreshtoken", refreshToken, {
       httpOnly: true,
       path: "/api/refresh_token",
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
@@ -112,24 +105,32 @@ export const logout = async (req, res, next) => {
 export const generateAccessToken = async (req, res, next) => {
   try {
     const rfToken = req.cookies.refreshtoken;
-    if (
-      (!rfToken,
+    if (!rfToken) return res.status(400).json({ msg: "Please login now." });
+
+    jwt.verify(
+      rfToken,
       process.env.REFRESH_TOKEN_SECRET,
       async (err, result) => {
         if (err) return res.status(400).json({ msg: "Please login now." });
 
         const user = await Users.findById(result.id).select("-password");
-        //.populate('followers following', 'avatar username fullname followers following')
 
         if (!user) return res.status(400).json({ msg: "This does not exist." });
 
         const accessToken = createAccessToken({ id: result.id });
+        const refreshToken = createRefreshToken({ id: user._id });
+
+        res.cookie("refreshtoken", refreshToken, {
+          httpOnly: true,
+          path: "/api/refresh_token",
+          maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
+        });
 
         res.json({
           accessToken,
           user,
         });
-      })
+      }
     );
   } catch (err) {
     console.error(err);
@@ -139,6 +140,7 @@ export const generateAccessToken = async (req, res, next) => {
 
 export const searchUser = async (req, res) => {
   try {
+    console.log(req.query.username);
     const users = await Users.find({ username: { $regex: req.query.username } })
       .limit(10)
       .select("fullname username avatar");
@@ -153,7 +155,7 @@ export const searchUser = async (req, res) => {
 export const getUser = async (req, res) => {
   try {
     const user = await Users.findById(req.params.id).select("-password");
-    console.log(req.user);
+
     if (!user) return res.status(400).json({ msg: "User does not exist." });
 
     res.json({ user });

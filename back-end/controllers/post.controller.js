@@ -46,6 +46,7 @@ export const createPost = async (req, res, next) => {
     next(err);
   }
 };
+
 export const getPosts = async (req, res, next) => {
   try {
     const features = new APIfeatures(Posts.find({}), req.query);
@@ -71,6 +72,7 @@ export const getPosts = async (req, res, next) => {
     next(err);
   }
 };
+
 export const hidePost = async (req, res, next) => {
   try {
     const post = await Posts.findOneAndUpdate(
@@ -93,6 +95,7 @@ export const hidePost = async (req, res, next) => {
     next(err);
   }
 };
+
 export const flagPost = async (req, res, next) => {
   try {
     const post = await Posts.findOneAndUpdate(
@@ -114,6 +117,7 @@ export const flagPost = async (req, res, next) => {
     next(err);
   }
 };
+
 export const unFlagPost = async (req, res, next) => {
   try {
     const post = await Posts.findOneAndUpdate(
@@ -130,11 +134,12 @@ export const unFlagPost = async (req, res, next) => {
           select: "-password",
         },
       });
-  } catch {
+  } catch (err) {
     console.error(err);
     next(err);
   }
 };
+
 export const updatePost = async (req, res, next) => {
   try {
     const { content, images } = req.body;
@@ -168,6 +173,7 @@ export const updatePost = async (req, res, next) => {
     next(err);
   }
 };
+
 export const likePost = async (req, res, next) => {
   try {
     const post = await Posts.find({
@@ -194,6 +200,7 @@ export const likePost = async (req, res, next) => {
     next(err);
   }
 };
+
 export const unLikePost = async (req, res, next) => {
   try {
     const like = await Posts.findOneAndUpdate(
@@ -213,6 +220,7 @@ export const unLikePost = async (req, res, next) => {
     next(err);
   }
 };
+
 export const getUserPosts = async (req, res, next) => {
   try {
     const features = new APIfeatures(
@@ -230,6 +238,7 @@ export const getUserPosts = async (req, res, next) => {
     next(err);
   }
 };
+
 export const getPost = async (req, res, next) => {
   try {
     const post = await Posts.findById(req.params.id)
@@ -258,6 +267,7 @@ export const getPost = async (req, res, next) => {
     next(err);
   }
 };
+
 export const deletePost = async (req, res, next) => {
   try {
     const post = await Posts.findOneAndDelete({ _id: req.params.id });
