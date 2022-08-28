@@ -48,6 +48,7 @@ export const getNotifies = async (req, res, next) => {
     next(err);
   }
 };
+
 export const isReadNotify = async (req, res, next) => {
   try {
     const notifies = await Notifies.findOneAndUpdate(
@@ -63,6 +64,7 @@ export const isReadNotify = async (req, res, next) => {
     next(err);
   }
 };
+
 export const deleteAllNotifies = async (req, res, next) => {
   try {
     const notifies = await Notifies.deleteMany({ recipients: req.user._id });

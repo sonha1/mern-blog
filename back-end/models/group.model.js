@@ -36,12 +36,10 @@ const groupSchema = new mongoose.Schema(
     joinRequests: {
       type: [{ type: mongoose.Types.ObjectId, ref: "user" }],
       default: [],
-      //required: true
     },
     invitedUsers: {
       type: [{ type: mongoose.Types.ObjectId, ref: "user" }],
       default: [],
-      //required: true
     },
   },
   {
